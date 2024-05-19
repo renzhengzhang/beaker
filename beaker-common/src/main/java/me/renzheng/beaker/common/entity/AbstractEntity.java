@@ -1,5 +1,8 @@
 package me.renzheng.beaker.common.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
 /**
@@ -8,12 +11,14 @@ import java.time.LocalDateTime;
  * @author Renzheng Zhang
  * @since 2024/4/18
  */
+@Getter
+@Setter
 public abstract class AbstractEntity<T> {
     protected T id;
 
-    protected String creator;
+    protected Long creator;
 
-    protected String modifier;
+    protected Long modifier;
 
     protected LocalDateTime createdAt;
 

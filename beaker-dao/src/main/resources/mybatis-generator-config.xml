@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入配置文件 -->
+    <properties resource="database.properties"/>
+
+    <context id="normal" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 实体类生成注释配置 -->
+        <commentGenerator>
+            <!-- 不生成注释 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- JDBC 配置 -->
+        <jdbcConnection driverClass="${spring.datasource.driver-class-name}"
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
+            <!-- 禁止对 MySQL 的 sys、information_schema、performance_schema 等数据库进行代码生成 -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- Java 类型解析配置 -->
+        <javaTypeResolver>
+            <!-- 将 JDBC 时间类型映射为 JSR310 类型. 例如将 DATE 转换为 java.time.LocalDate -->
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 实体类生成配置 -->
+        <javaModelGenerator targetPackage="me.renzheng.beaker.dao.entity" targetProject="src/main/java">
+            <!-- 配置生成实体类的基类 -->
+            <property name="rootClass" value="me.renzheng.beaker.common.entity.AbstractEntity"/>
+            <!-- Example 类路径 -->
+            <property name="exampleTargetPackage" value="me.renzheng.beaker.dao.example"/>
+            <property name="exampleTargetProject" value="src/main/java"/>
+            <!-- 是否在实体包下生成以数据库名命名的子包 -->
+            <property name="enableSubPackages" value="false"/>
+            <!-- 对数据库中 CHAR 及 VARCHAR 类型的字段自动进行 trim -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- Mapper XML 生成配置 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <!-- 是否在 mapper 目录下生成以数据库名命名的子目录 -->
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- Mapper 类成配置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="me.renzheng.beaker.dao.mapper"
+                             targetProject="src/main/java">
+            <!-- 是否在 mapper 包下生成以数据库名命名的子包 -->
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <table tableName="%" />
+    </context>
+</generatorConfiguration>

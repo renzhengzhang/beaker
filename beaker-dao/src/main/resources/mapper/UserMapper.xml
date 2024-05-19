@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.renzheng.beaker.dao.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="me.renzheng.beaker.dao.entity.UserDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="creator" jdbcType="BIGINT" property="creator" />
+    <result column="modifier" jdbcType="BIGINT" property="modifier" />
+    <result column="deleted" jdbcType="TINYINT" property="deleted" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="passwd" jdbcType="CHAR" property="passwd" />
+    <result column="baned" jdbcType="TINYINT" property="baned" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, created_at, updated_at, creator, modifier, deleted, username, gender, birthday, 
+    phone_number, email, passwd, baned
+  </sql>
+  <select id="selectByExample" parameterType="me.renzheng.beaker.dao.example.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="me.renzheng.beaker.dao.example.UserExample">
+    delete from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="me.renzheng.beaker.dao.entity.UserDO">
+    insert into user (id, created_at, updated_at, 
+      creator, modifier, deleted, 
+      username, gender, birthday, 
+      phone_number, email, passwd, 
+      baned)
+    values (#{id,jdbcType=BIGINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
+      #{creator,jdbcType=BIGINT}, #{modifier,jdbcType=BIGINT}, #{deleted,jdbcType=TINYINT}, 
+      #{username,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{birthday,jdbcType=DATE}, 
+      #{phoneNumber,jdbcType=CHAR}, #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=CHAR}, 
+      #{baned,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="me.renzheng.beaker.dao.entity.UserDO">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="modifier != null">
+        modifier,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="phoneNumber != null">
+        phone_number,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="passwd != null">
+        passwd,
+      </if>
+      <if test="baned != null">
+        baned,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=BIGINT},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="phoneNumber != null">
+        #{phoneNumber,jdbcType=CHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null">
+        #{passwd,jdbcType=CHAR},
+      </if>
+      <if test="baned != null">
+        #{baned,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="me.renzheng.beaker.dao.example.UserExample" resultType="java.lang.Long">
+    select count(*) from user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update user
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedAt != null">
+        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifier != null">
+        modifier = #{record.modifier,jdbcType=BIGINT},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=TINYINT},
+      </if>
+      <if test="record.username != null">
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        gender = #{record.gender,jdbcType=TINYINT},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.phoneNumber != null">
+        phone_number = #{record.phoneNumber,jdbcType=CHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passwd != null">
+        passwd = #{record.passwd,jdbcType=CHAR},
+      </if>
+      <if test="record.baned != null">
+        baned = #{record.baned,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update user
+    set id = #{record.id,jdbcType=BIGINT},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
+      creator = #{record.creator,jdbcType=BIGINT},
+      modifier = #{record.modifier,jdbcType=BIGINT},
+      deleted = #{record.deleted,jdbcType=TINYINT},
+      username = #{record.username,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=TINYINT},
+      birthday = #{record.birthday,jdbcType=DATE},
+      phone_number = #{record.phoneNumber,jdbcType=CHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      passwd = #{record.passwd,jdbcType=CHAR},
+      baned = #{record.baned,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="me.renzheng.beaker.dao.entity.UserDO">
+    update user
+    <set>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=BIGINT},
+      </if>
+      <if test="modifier != null">
+        modifier = #{modifier,jdbcType=BIGINT},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=TINYINT},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=TINYINT},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="phoneNumber != null">
+        phone_number = #{phoneNumber,jdbcType=CHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="passwd != null">
+        passwd = #{passwd,jdbcType=CHAR},
+      </if>
+      <if test="baned != null">
+        baned = #{baned,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="me.renzheng.beaker.dao.entity.UserDO">
+    update user
+    set created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=BIGINT},
+      modifier = #{modifier,jdbcType=BIGINT},
+      deleted = #{deleted,jdbcType=TINYINT},
+      username = #{username,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=TINYINT},
+      birthday = #{birthday,jdbcType=DATE},
+      phone_number = #{phoneNumber,jdbcType=CHAR},
+      email = #{email,jdbcType=VARCHAR},
+      passwd = #{passwd,jdbcType=CHAR},
+      baned = #{baned,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

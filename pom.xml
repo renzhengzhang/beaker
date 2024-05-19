@@ -26,6 +26,9 @@
         <beaker-dao.version>1.0-SNAPSHOT</beaker-dao.version>
         <beaker-service.version>1.0-SNAPSHOT</beaker-service.version>
         <beaker-biz.version>1.0-SNAPSHOT</beaker-biz.version>
+        <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
+        <mysql-connector-java.version>8.0.33</mysql-connector-java.version>
+        <mbg-plugin.version>1.3.5</mbg-plugin.version>
         <guava.version>33.1.0-jre</guava.version>
         <commons-lang3.version>3.14.0</commons-lang3.version>
         <commons-collections4.version>4.4</commons-collections4.version>
@@ -70,6 +73,18 @@
             </dependency>
 
             <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis-spring-boot-starter.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons-collections4.version}</version>
@@ -109,6 +124,16 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.mybatis.generator</groupId>
+                    <artifactId>mybatis-generator-maven-plugin</artifactId>
+                    <version>${mbg-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>
