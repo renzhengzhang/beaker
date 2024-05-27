@@ -6,7 +6,7 @@ package me.renzheng.beaker.service;
  * @author Renzheng Zhang
  * @since 2024/4/28
  */
-public interface AbstractEntityService<T, E> {
+public interface EntityService<T, E> {
 
     void insert(E entity);
 

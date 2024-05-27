@@ -7,6 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -18,6 +19,10 @@ import java.util.Optional;
 public class UserConverter {
 
     public static UserDO convertToDO(UserBO userBO) {
+        if (Objects.isNull(userBO)) {
+            return null;
+        }
+
         UserDO userDO = new UserDO();
         userDO.setUsername(userBO.getUsername());
         userDO.setGender(Optional.ofNullable(userBO.getGender()).map(Gender::getCode).orElse(Gender.UNKNOWN.getCode()));
@@ -37,6 +42,10 @@ public class UserConverter {
     }
 
     public static UserBO convertToBO(UserDO userDO) {
+        if (Objects.isNull(userDO)) {
+            return null;
+        }
+
         UserBO userBO = new UserBO();
         userBO.setUsername(userDO.getUsername());
         userBO.setGender(Gender.fromCode(userDO.getGender()));
@@ -59,13 +68,14 @@ public class UserConverter {
         if (CollectionUtils.isEmpty(userBOList)) {
             return Collections.emptyList();
         }
-        return userBOList.stream().map(UserConverter::convertToDO).toList();
+        return userBOList.stream().filter(Objects::nonNull).map(UserConverter::convertToDO).toList();
     }
 
     public static List<UserBO> convertToBO(List<UserDO> userDOList) {
         if (CollectionUtils.isEmpty(userDOList)) {
             return Collections.emptyList();
         }
-        return userDOList.stream().map(UserConverter::convertToBO).toList();
+
+        return userDOList.stream().filter(Objects::nonNull).map(UserConverter::convertToBO).toList();
     }
 }
