@@ -18,7 +18,6 @@
         <module>beaker-start</module>
         <module>beaker-biz</module>
         <module>beaker-service</module>
-        <module>beaker-start</module>
     </modules>
 
     <properties>
