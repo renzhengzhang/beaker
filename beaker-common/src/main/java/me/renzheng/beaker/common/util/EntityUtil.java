@@ -27,7 +27,7 @@ public class EntityUtil {
         if (CollectionUtils.isEmpty(entities)) {
             return;
         }
-        entities.forEach(e -> populateCreationFields(entities));
+        entities.forEach(EntityUtil::populateCreationFields);
     }
 
     public static <T extends AbstractEntity<?>> void populateUpdateFields(T entity) {
@@ -40,6 +40,6 @@ public class EntityUtil {
         if (CollectionUtils.isEmpty(entities)) {
             return;
         }
-        entities.forEach(e -> populateUpdateFields(entities));
+        entities.forEach(EntityUtil::populateUpdateFields);
     }
 }
