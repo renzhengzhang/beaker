@@ -892,63 +892,63 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andBanedIsNull() {
-            addCriterion("baned is null");
+        public Criteria andBannedIsNull() {
+            addCriterion("banned is null");
             return (Criteria) this;
         }
 
-        public Criteria andBanedIsNotNull() {
-            addCriterion("baned is not null");
+        public Criteria andBannedIsNotNull() {
+            addCriterion("banned is not null");
             return (Criteria) this;
         }
 
-        public Criteria andBanedEqualTo(Byte value) {
-            addCriterion("baned =", value, "baned");
+        public Criteria andBannedEqualTo(Byte value) {
+            addCriterion("banned =", value, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedNotEqualTo(Byte value) {
-            addCriterion("baned <>", value, "baned");
+        public Criteria andBannedNotEqualTo(Byte value) {
+            addCriterion("banned <>", value, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedGreaterThan(Byte value) {
-            addCriterion("baned >", value, "baned");
+        public Criteria andBannedGreaterThan(Byte value) {
+            addCriterion("banned >", value, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedGreaterThanOrEqualTo(Byte value) {
-            addCriterion("baned >=", value, "baned");
+        public Criteria andBannedGreaterThanOrEqualTo(Byte value) {
+            addCriterion("banned >=", value, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedLessThan(Byte value) {
-            addCriterion("baned <", value, "baned");
+        public Criteria andBannedLessThan(Byte value) {
+            addCriterion("banned <", value, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedLessThanOrEqualTo(Byte value) {
-            addCriterion("baned <=", value, "baned");
+        public Criteria andBannedLessThanOrEqualTo(Byte value) {
+            addCriterion("banned <=", value, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedIn(List<Byte> values) {
-            addCriterion("baned in", values, "baned");
+        public Criteria andBannedIn(List<Byte> values) {
+            addCriterion("banned in", values, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedNotIn(List<Byte> values) {
-            addCriterion("baned not in", values, "baned");
+        public Criteria andBannedNotIn(List<Byte> values) {
+            addCriterion("banned not in", values, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedBetween(Byte value1, Byte value2) {
-            addCriterion("baned between", value1, value2, "baned");
+        public Criteria andBannedBetween(Byte value1, Byte value2) {
+            addCriterion("banned between", value1, value2, "banned");
             return (Criteria) this;
         }
 
-        public Criteria andBanedNotBetween(Byte value1, Byte value2) {
-            addCriterion("baned not between", value1, value2, "baned");
+        public Criteria andBannedNotBetween(Byte value1, Byte value2) {
+            addCriterion("banned not between", value1, value2, "banned");
             return (Criteria) this;
         }
     }

@@ -30,7 +30,7 @@ public class UserConverter {
         userDO.setPhoneNumber(userBO.getPhoneNumber());
         userDO.setEmail(userBO.getEmail());
         userDO.setPasswd(userBO.getPasswd());
-        userDO.setBaned(userBO.getBaned());
+        userDO.setBanned(userBO.getBanned());
         userDO.setId(userBO.getId());
         userDO.setCreator(userBO.getCreator());
         userDO.setModifier(userBO.getModifier());
@@ -53,7 +53,7 @@ public class UserConverter {
         userBO.setPhoneNumber(userDO.getPhoneNumber());
         userBO.setEmail(userDO.getEmail());
         userBO.setPasswd(userDO.getPasswd());
-        userBO.setBaned(userDO.getBaned());
+        userBO.setBanned(userDO.getBanned());
         userBO.setId(userDO.getId());
         userBO.setCreator(userDO.getCreator());
         userBO.setModifier(userDO.getModifier());

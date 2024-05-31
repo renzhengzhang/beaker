@@ -29,5 +29,5 @@ public class UserBO extends AbstractEntity<Long> {
 
     private String passwd;
 
-    private Boolean baned;
+    private Boolean banned;
 }

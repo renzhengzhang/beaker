@@ -14,7 +14,7 @@
     <result column="phone_number" jdbcType="CHAR" property="phoneNumber" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="passwd" jdbcType="CHAR" property="passwd" />
-    <result column="baned" jdbcType="TINYINT" property="baned" />
+    <result column="banned" jdbcType="TINYINT" property="banned" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, created_at, updated_at, creator, modifier, deleted, username, gender, birthday, 
-    phone_number, email, passwd, baned
+    phone_number, email, passwd, banned
   </sql>
   <select id="selectByExample" parameterType="me.renzheng.beaker.dao.example.UserExample" resultMap="BaseResultMap">
     select
@@ -113,12 +113,12 @@
       creator, modifier, deleted, 
       username, gender, birthday, 
       phone_number, email, passwd, 
-      baned)
+      banned)
     values (#{id,jdbcType=BIGINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
       #{creator,jdbcType=BIGINT}, #{modifier,jdbcType=BIGINT}, #{deleted,jdbcType=TINYINT}, 
       #{username,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{birthday,jdbcType=DATE}, 
       #{phoneNumber,jdbcType=CHAR}, #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=CHAR}, 
-      #{baned,jdbcType=TINYINT})
+      #{banned,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="me.renzheng.beaker.dao.entity.UserDO">
     insert into user
@@ -159,8 +159,8 @@
       <if test="passwd != null">
         passwd,
       </if>
-      <if test="baned != null">
-        baned,
+      <if test="banned != null">
+        banned,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -200,8 +200,8 @@
       <if test="passwd != null">
         #{passwd,jdbcType=CHAR},
       </if>
-      <if test="baned != null">
-        #{baned,jdbcType=TINYINT},
+      <if test="banned != null">
+        #{banned,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -250,8 +250,8 @@
       <if test="record.passwd != null">
         passwd = #{record.passwd,jdbcType=CHAR},
       </if>
-      <if test="record.baned != null">
-        baned = #{record.baned,jdbcType=TINYINT},
+      <if test="record.banned != null">
+        banned = #{record.banned,jdbcType=TINYINT},
       </if>
     </set>
     <if test="_parameter != null">
@@ -272,7 +272,7 @@
       phone_number = #{record.phoneNumber,jdbcType=CHAR},
       email = #{record.email,jdbcType=VARCHAR},
       passwd = #{record.passwd,jdbcType=CHAR},
-      baned = #{record.baned,jdbcType=TINYINT}
+      banned = #{record.banned,jdbcType=TINYINT}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -313,8 +313,8 @@
       <if test="passwd != null">
         passwd = #{passwd,jdbcType=CHAR},
       </if>
-      <if test="baned != null">
-        baned = #{baned,jdbcType=TINYINT},
+      <if test="banned != null">
+        banned = #{banned,jdbcType=TINYINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -332,7 +332,7 @@
       phone_number = #{phoneNumber,jdbcType=CHAR},
       email = #{email,jdbcType=VARCHAR},
       passwd = #{passwd,jdbcType=CHAR},
-      baned = #{baned,jdbcType=TINYINT}
+      banned = #{banned,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
