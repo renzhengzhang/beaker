@@ -90,6 +90,9 @@ public class UserBizImpl implements UserBiz, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserBO user = userService.selectByUsername(username);
+        if (Objects.isNull(user)) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }
 
         return new User(
                 user.getUsername(),         // username
