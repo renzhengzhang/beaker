@@ -1,5 +1,6 @@
 package me.renzheng.beaker.common.util;
 
+import me.renzheng.beaker.common.context.IdentityContextHolder;
 import me.renzheng.beaker.common.entity.AbstractEntity;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -15,9 +16,8 @@ import java.util.List;
 public class EntityUtil {
 
     public static <T extends AbstractEntity<?>> void populateCreationFields(T entity) {
-        // TODO set creator and modifier with spring security
-        entity.setCreator(0L);
-        entity.setModifier(0L);
+        entity.setCreator(IdentityContextHolder.getIdentity());
+        entity.setModifier(IdentityContextHolder.getIdentity());
         entity.setUpdatedAt(LocalDateTime.now());
         entity.setCreatedAt(LocalDateTime.now());
         entity.setDeleted(false);
@@ -31,8 +31,7 @@ public class EntityUtil {
     }
 
     public static <T extends AbstractEntity<?>> void populateUpdateFields(T entity) {
-        // TODO set modifier
-        entity.setModifier(0L);
+        entity.setModifier(IdentityContextHolder.getIdentity());
         entity.setUpdatedAt(LocalDateTime.now());
     }
 
