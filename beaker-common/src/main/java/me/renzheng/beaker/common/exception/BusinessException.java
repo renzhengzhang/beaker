@@ -1,22 +1,18 @@
 package me.renzheng.beaker.common.exception;
 
+import lombok.Getter;
+
 /**
  * 业务异常
  *
  * @author Renzheng Zhang
  * @since 2024/5/28
  */
+@Getter
 public class BusinessException extends RuntimeException {
 
-    private final String code;
-
-    public BusinessException(String code, String message) {
+    public BusinessException(String message) {
         super(message);
-        this.code = code;
-    }
-
-    public String getCode() {
-        return code;
     }
 
 }
