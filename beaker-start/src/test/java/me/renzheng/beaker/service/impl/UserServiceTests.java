@@ -2,7 +2,7 @@ package me.renzheng.beaker.service.impl;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import me.renzheng.beaker.dao.bo.UserBO;
+import me.renzheng.beaker.service.bo.UserBO;
 import me.renzheng.beaker.service.UserService;
 import me.renzheng.beaker.start.Application;
 import org.junit.jupiter.api.Assertions;

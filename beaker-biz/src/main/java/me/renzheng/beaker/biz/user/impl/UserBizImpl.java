@@ -3,15 +3,13 @@ package me.renzheng.beaker.biz.user.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.renzheng.beaker.biz.user.UserBiz;
-import me.renzheng.beaker.dao.bo.UserBO;
 import me.renzheng.beaker.service.UserService;
+import me.renzheng.beaker.service.bo.UserBO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -93,14 +91,6 @@ public class UserBizImpl implements UserBiz, UserDetailsService {
         if (Objects.isNull(user)) {
             throw new UsernameNotFoundException("用户名不存在");
         }
-
-        return new User(
-                user.getUsername(),         // username
-                user.getPasswd(),           // password
-                !user.getBanned(),          // enabled
-                true,                       // accountNonExpired
-                true,                       // credentialsNonExpired
-                !user.getBanned(),          // accountNonLocked
-                Collections.emptyList());   // TODO authorities
+        return user;
     }
 }

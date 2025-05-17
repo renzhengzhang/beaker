@@ -1,6 +1,6 @@
 package me.renzheng.beaker.service;
 
-import me.renzheng.beaker.dao.bo.UserBO;
+import me.renzheng.beaker.service.bo.UserBO;
 
 /**
  * UserService

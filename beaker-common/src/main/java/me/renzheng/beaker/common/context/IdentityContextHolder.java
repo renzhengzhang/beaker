@@ -1,6 +1,7 @@
 package me.renzheng.beaker.common.context;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
+import me.renzheng.beaker.common.constants.IdentityConstants;
 
 import java.util.Optional;
 
@@ -22,6 +23,6 @@ public class IdentityContextHolder {
 
     public static Long getIdentity() {
         IdentityContext identityContext = getIdentityContext();
-        return Optional.ofNullable(identityContext).map(IdentityContext::getId).orElse(0L);
+        return Optional.ofNullable(identityContext).map(IdentityContext::getId).orElse(IdentityConstants.SYSTEM_ID);
     }
 }

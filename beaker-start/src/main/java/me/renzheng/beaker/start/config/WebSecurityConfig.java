@@ -30,11 +30,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/", "/login", "/api/weather-forecast").permitAll()
+                        .requestMatchers("/", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
-                .formLogin((formLogin) -> formLogin.loginPage("/login"));
+                .formLogin((formLogin) -> formLogin.loginPage("/login").permitAll());
 
         return http.build();
     }

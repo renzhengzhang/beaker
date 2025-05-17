@@ -2,8 +2,8 @@ package me.renzheng.beaker.service.impl;
 
 import jakarta.annotation.Resource;
 import me.renzheng.beaker.common.util.EntityUtil;
-import me.renzheng.beaker.dao.bo.UserBO;
-import me.renzheng.beaker.dao.converter.UserConverter;
+import me.renzheng.beaker.service.bo.UserBO;
+import me.renzheng.beaker.service.converter.UserConverter;
 import me.renzheng.beaker.dao.entity.UserDO;
 import me.renzheng.beaker.dao.example.UserExample;
 import me.renzheng.beaker.dao.mapper.UserMapper;

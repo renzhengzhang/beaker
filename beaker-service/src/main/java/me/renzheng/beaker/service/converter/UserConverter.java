@@ -1,8 +1,8 @@
-package me.renzheng.beaker.dao.converter;
+package me.renzheng.beaker.service.converter;
 
 import me.renzheng.beaker.common.enums.Gender;
-import me.renzheng.beaker.dao.bo.UserBO;
 import me.renzheng.beaker.dao.entity.UserDO;
+import me.renzheng.beaker.service.bo.UserBO;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Collections;
