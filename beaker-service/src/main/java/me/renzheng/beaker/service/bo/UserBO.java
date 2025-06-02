@@ -52,21 +52,21 @@ public class UserBO extends AbstractEntity<Long> implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return Boolean.TRUE.equals(banned);
+        return !Boolean.TRUE.equals(banned);
     }
 }
