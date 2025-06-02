@@ -1,5 +1,6 @@
 package me.renzheng.beaker.start.config;
 
+
 import me.renzheng.beaker.biz.user.impl.UserBizImpl;
 import me.renzheng.beaker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,18 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
+    private static final String[] PERMIT_ALL_URLS = {
+            "/",
+            "/login",
+            "/favicon.ico",
+            "/static/**",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/", "/login").permitAll()
+                        .requestMatchers(PERMIT_ALL_URLS).permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
