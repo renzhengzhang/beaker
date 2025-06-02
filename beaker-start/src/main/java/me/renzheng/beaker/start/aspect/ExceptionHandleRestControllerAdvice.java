@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -24,6 +25,13 @@ import java.util.Set;
 public class ExceptionHandleRestControllerAdvice {
 
     private static final String INVALID_REQUEST_PARAMETER = "非法的请求参数";
+
+    @ExceptionHandler(value = NoResourceFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNoResourceFoundException(NoResourceFoundException e) {
+        log.info("全局异常处理器捕获找不到资源异常", e);
+        return HttpStatus.NOT_FOUND.getReasonPhrase();
+    }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
