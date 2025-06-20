@@ -10,32 +10,29 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * HomeController - 处理首页请求
+ * 测试 Controller
  *
  * @author Renzheng Zhang
- * @since 2024/4/28
+ * @since 2025/6/21
  */
 @Slf4j
 @Controller
-@RequestMapping("/")
-public class HomeController {
+@RequestMapping("/test/")
+public class TestController {
 
     /**
-     * 首页
+     * JWT Token 测试页面
      */
-    @GetMapping
-    public String index(Model model) {
-        log.info("访问首页");
+    @GetMapping("/jwt")
+    public String jwt(Model model) {
+        log.info("访问 Jwt Token 测试页面");
+        // 添加页面标题和描述
+        model.addAttribute("pageTitle", "JWT Token 测试工具");
+        model.addAttribute("pageDescription", "Jwt Authentication 测试页，支持登录、刷新令牌、API调用等功能");
 
-        // 添加当前时间
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         model.addAttribute("currentTime", LocalDateTime.now().format(formatter));
 
-        // 添加系统信息
-        model.addAttribute("systemName", "Beaker 系统");
-        model.addAttribute("version", "1.0.0");
-
-        return "home";
+        return "test/jwt";
     }
-
 }

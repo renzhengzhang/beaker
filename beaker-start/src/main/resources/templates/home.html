@@ -1,9 +1,351 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+
 <head>
-    <title>Home - Beaker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - Beaker 系统</title>
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+    <link href="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .home-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .animation-delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .animation-delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        .animation-delay-600 {
+            animation-delay: 0.6s;
+        }
+
+        .animation-delay-800 {
+            animation-delay: 0.8s;
+        }
+
+        .animation-delay-1000 {
+            animation-delay: 1.0s;
+        }
+
+        .animation-delay-1200 {
+            animation-delay: 1.2s;
+        }
+    </style>
 </head>
-<body>
-<h1>Welcome to the Home Page!</h1>
+
+<body class="home-bg min-h-screen">
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div
+            class="absolute -top-40 -right-32 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse">
+        </div>
+        <div
+            class="absolute -bottom-40 -left-32 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-2000">
+        </div>
+        <div
+            class="absolute top-40 left-40 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse animation-delay-4000">
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="relative z-10 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                    <i class="fas fa-flask text-xl text-indigo-600"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-white">Beaker 系统</h1>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <!-- 导航链接 -->
+                <a th:href="@{/login}"
+                    class="nav-button px-4 py-2 rounded-lg text-white hover:text-white transition-all duration-200">
+                    <i class="fas fa-sign-in-alt mr-1"></i>
+                    登录
+                </a>
+
+                <a th:href="@{/test/jwt}"
+                    class="nav-button px-4 py-2 rounded-lg text-white hover:text-white transition-all duration-200">
+                    <i class="fas fa-code mr-1"></i>
+                    JWT测试
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <div class="relative z-10 container mx-auto px-4 py-16">
+        <!-- 欢迎区域 -->
+        <div class="text-center mb-16 fade-in-up">
+            <h1 class="text-5xl font-bold text-white mb-6">
+                欢迎来到 Beaker 系统
+            </h1>
+            <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                一个现代化的 Spring Boot 应用程序，集成了 JWT 认证、Spring Security、MyBatis 等企业级技术栈
+            </p>
+            <div class="flex items-center justify-center space-x-2 text-blue-200">
+                <i class="fas fa-clock mr-1"></i>
+                <span th:if="${currentTime}" th:text="${'当前时间: ' + currentTime}"></span>
+            </div>
+        </div>
+
+        <!-- 功能卡片网格 -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <!-- 用户管理 -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-200">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-users text-2xl text-indigo-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">用户管理</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    完整的用户注册、登录、权限管理系统，支持角色分配和权限控制
+                </p>
+                <div class="text-center">
+                    <button
+                        class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                        了解更多
+                    </button>
+                </div>
+            </div>
+
+            <!-- JWT 认证 -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-400">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-shield-alt text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">JWT 认证</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    基于 JWT Token 的无状态认证系统，支持 Access Token 和 Refresh Token
+                </p>
+                <div class="text-center">
+                    <a th:href="@{/test/jwt}"
+                        class="bg-white text-green-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors inline-block">
+                        测试 JWT
+                    </a>
+                </div>
+            </div>
+
+            <!-- API 接口 -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-600">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-code text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">RESTful API</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    标准的 REST API 设计，支持 JSON 数据交换和完整的错误处理机制
+                </p>
+                <div class="text-center">
+                    <button
+                        class="bg-white text-purple-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                        查看文档
+                    </button>
+                </div>
+            </div>
+
+            <!-- 数据库集成 -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-800">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-database text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">数据库集成</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    集成 MyBatis 和数据库连接池，支持事务管理和数据持久化
+                </p>
+                <div class="text-center">
+                    <button
+                        class="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                        了解更多
+                    </button>
+                </div>
+            </div>
+
+            <!-- Spring Security -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-1000">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-lock text-2xl text-red-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">安全框架</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    基于 Spring Security 的安全框架，提供认证授权和安全防护
+                </p>
+                <div class="text-center">
+                    <button
+                        class="bg-white text-red-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                        安全配置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 国际化支持 -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-1200">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-globe text-2xl text-orange-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">国际化</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    支持多语言切换和本地化，提供中文和英文界面
+                </p>
+                <div class="text-center">
+                    <button
+                        class="bg-white text-orange-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+                        语言设置
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速开始 -->
+        <div class="glass-effect p-8 rounded-2xl shadow-2xl text-center fade-in-up">
+            <h2 class="text-3xl font-bold text-white mb-6">快速开始</h2>
+            <p class="text-blue-100 mb-8 max-w-2xl mx-auto">
+                选择您要体验的功能，开始探索 Beaker 系统的强大能力
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a th:href="@{/login}"
+                    class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    立即登录
+                </a>
+                <a th:href="@{/test/jwt}"
+                    class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
+                    <i class="fas fa-code mr-2"></i>
+                    JWT 测试
+                </a>
+                <a th:href="@{/admin}"
+                    class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
+                    <i class="fas fa-cog mr-2"></i>
+                    管理后台
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="relative z-10 text-center py-8">
+        <div class="container mx-auto px-4">
+            <!-- 语言切换 -->
+            <div class="flex items-center justify-center space-x-2 text-sm text-blue-200 mb-4">
+                <i class="fas fa-globe mr-1"></i>
+                <a th:href="@{/(lang='zh_CN')}" class="hover:text-white transition-colors"
+                    th:classappend="${#locale.toString() == 'zh_CN'} ? 'text-white font-semibold' : ''">
+                    中文
+                </a>
+                <span>|</span>
+                <a th:href="@{/(lang='en')}" class="hover:text-white transition-colors"
+                    th:classappend="${#locale.toString() == 'en'} ? 'text-white font-semibold' : ''">
+                    English
+                </a>
+            </div>
+
+            <p class="text-sm text-blue-200">
+                © 2025 Beaker 系统. 保留所有权利.
+            </p>
+            <p class="text-xs text-blue-300 mt-2">
+                基于 Spring Boot + Spring Security + JWT + MyBatis 构建
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', function () {
+            // 为卡片添加序列动画
+            const cards = document.querySelectorAll('.fade-in-up');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 平滑滚动到顶部
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // 添加滚动效果
+        window.addEventListener('scroll', function () {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(255, 255, 255, 0.1)';
+                nav.style.backdropFilter = 'blur(10px)';
+            } else {
+                nav.style.background = 'transparent';
+                nav.style.backdropFilter = 'none';
+            }
+        });
+    </script>
 </body>
+
 </html>
