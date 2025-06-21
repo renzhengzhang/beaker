@@ -79,8 +79,8 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
         JwtClaimsSet claims = claimsBuilder.build();
 
-        // 使用 HS512 算法创建 Jwt 头部，与 WebSecurityConfig 中配置的保持一致
-        JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS512).build();
+        // 使用 HS256 算法创建 Jwt 头部，与 WebSecurityConfig 中配置的保持一致
+        JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS256).build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
     }

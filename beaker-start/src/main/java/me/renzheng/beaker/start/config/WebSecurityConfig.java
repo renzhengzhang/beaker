@@ -78,7 +78,7 @@ public class WebSecurityConfig {
     @Order(1)
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher(request -> !request.getRequestURI().startsWith("/api/")) // 明确排除 /api/** 路径
+                .securityMatcher(request -> !request.getRequestURI().startsWith("/api/"))   // 排除 /api/** 路径
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(PERMIT_ALL_URLS).permitAll()
                         .anyRequest().authenticated())
@@ -86,12 +86,12 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .permitAll())
                 .logout((logout) -> logout
-                        .logoutUrl("/logout") // 登出处理URL
-                        .logoutSuccessUrl("/login?logout") // 登出成功后重定向 URL
-                        .invalidateHttpSession(true) // 使 Session 失效
-                        .deleteCookies("JSESSIONID") // 删除指定的 Cookies
-                        .clearAuthentication(true) // 清除认证信息
-                        .permitAll() // 允许所有用户访问登出URL
+                        .logoutUrl("/logout")                                               // 登出处理URL
+                        .logoutSuccessUrl("/login?logout")                                  // 登出成功后重定向 URL
+                        .invalidateHttpSession(true)                                        // 使 Session 失效
+                        .deleteCookies("JSESSIONID")                                        // 删除指定的 Cookies
+                        .clearAuthentication(true)                                          // 清除认证信息
+                        .permitAll()                                                        // 允许所有用户访问登出 URL
                 );
 
         return http.build();
@@ -124,9 +124,9 @@ public class WebSecurityConfig {
     @Bean
     public JwtDecoder jwtDecoder() {
         byte[] keyBytes = securityProperties.getJwt().getSecret().getBytes(StandardCharsets.UTF_8);
-        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA512");
+        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey)
-                .macAlgorithm(MacAlgorithm.HS512)
+                .macAlgorithm(MacAlgorithm.HS256)
                 .build();
     }
 
@@ -136,7 +136,7 @@ public class WebSecurityConfig {
     @Bean
     public JwtEncoder jwtEncoder() {
         byte[] keyBytes = securityProperties.getJwt().getSecret().getBytes(StandardCharsets.UTF_8);
-        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA512");
+        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
         ImmutableSecret<SecurityContext> secret = new ImmutableSecret<>(secretKey);
         return new NimbusJwtEncoder(secret);
     }
@@ -161,7 +161,7 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+                                                       PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setAuthoritiesMapper(new SimpleAuthorityMapper());
         authenticationProvider.setUserDetailsService(userDetailsService);
