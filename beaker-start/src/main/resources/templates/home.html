@@ -96,10 +96,53 @@
         .animation-delay-1200 {
             animation-delay: 1.2s;
         }
+
+        #toast-container {
+            position: fixed;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast-success {
+            background-color: #28a745;
+        }
+
+        .toast-error {
+            background-color: #dc3545;
+        }
+
+        .toast-icon {
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
     </style>
+    <script th:src="@{/js/auth-helper.js}"></script>
 </head>
 
 <body class="home-bg min-h-screen">
+    <!-- Toast 容器 -->
+    <div id="toast-container"></div>
     <!-- 背景装饰 -->
     <div class="absolute inset-0 overflow-hidden">
         <div
@@ -124,17 +167,35 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <!-- 导航链接 -->
-                <a th:href="@{/login}"
-                    class="nav-button px-4 py-2 rounded-lg text-white hover:text-white transition-all duration-200">
-                    <i class="fas fa-sign-in-alt mr-1"></i>
-                    登录
-                </a>
+                <!-- 未登录时显示 -->
+                <div th:if="${username == null}">
+                    <a th:href="@{/login}"
+                        class="nav-button px-4 py-2 rounded-lg text-white hover:text-white transition-all duration-200">
+                        <i class="fas fa-sign-in-alt mr-1"></i>
+                        登录
+                    </a>
+                </div>
 
+                <!-- 已登录时显示 -->
+                <div th:if="${username != null}" class="flex items-center space-x-4">
+                    <span class="text-white text-sm font-medium">
+                        <i class="fas fa-user-circle mr-1"></i>
+                        欢迎, <span th:text="${username}"></span>
+                    </span>
+                    <form th:action="@{/logout}" method="post" class="inline">
+                        <button type="submit"
+                            class="nav-button px-4 py-2 rounded-lg text-white hover:text-white transition-all duration-200">
+                            <i class="fas fa-sign-out-alt mr-1"></i>
+                            登出
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 通用链接 -->
                 <a th:href="@{/test/jwt}"
                     class="nav-button px-4 py-2 rounded-lg text-white hover:text-white transition-all duration-200">
                     <i class="fas fa-code mr-1"></i>
-                    JWT测试
+                    JWT 测试
                 </a>
             </div>
         </div>
@@ -314,9 +375,31 @@
     </footer>
 
     <script>
-        // 页面加载动画
-        document.addEventListener('DOMContentLoaded', function () {
-            // 为卡片添加序列动画
+        // Toast 通知函数
+        function showToast(message, type = 'success', duration = 3000) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+            toast.innerHTML = `<i class="fas ${iconClass} toast-icon"></i><span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500);
+            }, duration);
+        }
+
+        // 页面加载动画和认证初始化
+        document.addEventListener('DOMContentLoaded', async function () {
+            const auth = new AuthHelper();
+            // 只做认证初始化，不再获取用户信息，也不再动态更新用户名
+            await auth.initializeAuth();
+            // 其余 UI 交互和欢迎语全部交给 Thymeleaf 渲染
+            // ... 其他动画和功能 ...
             const cards = document.querySelectorAll('.fade-in-up');
             cards.forEach((card, index) => {
                 setTimeout(() => {

@@ -1,6 +1,8 @@
 package me.renzheng.beaker.start.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Controller
 @RequestMapping("/")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LoginController {
 
     /**
@@ -32,11 +35,9 @@ public class LoginController {
 
         if (error != null) {
             model.addAttribute("error", true);
-            log.warn("登录失败，错误信息将由 Spring Security 国际化处理");
         }
         if (logout != null) {
             model.addAttribute("logout", true);
-            log.info("用户登出成功");
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -44,5 +45,4 @@ public class LoginController {
 
         return "login";
     }
-
 }

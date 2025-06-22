@@ -37,12 +37,12 @@ public class AppSecurityProperties {
         /**
          * 访问令牌过期时间（秒）
          */
-        private long accessTokenExpiration = 3600;
+        private int accessTokenExpiration = 3600;
 
         /**
          * 刷新令牌过期时间（秒）
          */
-        private long refreshTokenExpiration = 2592000;
+        private int refreshTokenExpiration = 2592000;
     }
 
     /**

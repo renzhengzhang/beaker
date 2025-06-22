@@ -114,6 +114,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     @Override
     public boolean isRefreshToken(String token) {
         try {
+            // TODO 这里除了需要校验 Token 签名合法性之外，还需要通过持久化机制校验 Token 有没有被吊销
             var jwt = jwtDecoder.decode(token);
             return "refresh".equals(jwt.getClaim("type"));
         } catch (JwtException e) {
@@ -122,7 +123,13 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
-    public long getAccessTokenExpirationInSeconds() {
+    public int getAccessTokenExpirationInSeconds() {
         return securityProperties.getJwt().getAccessTokenExpiration();
+    }
+
+
+    @Override
+    public int getRefreshTokenExpirationInSeconds() {
+        return securityProperties.getJwt().getRefreshTokenExpiration();
     }
 }

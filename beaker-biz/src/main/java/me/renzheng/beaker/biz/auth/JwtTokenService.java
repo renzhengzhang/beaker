@@ -28,7 +28,7 @@ public interface JwtTokenService {
      * 验证 Jwt Token 签名并返回用户名
      *
      * @param token Jwt Token
-     * @return 令牌中的用户名
+     * @return Token 中的用户名
      * @throws JwtException 如果令牌无效
      */
     String validateTokenAndGetUsername(String token);
@@ -46,7 +46,7 @@ public interface JwtTokenService {
      * 检查 Token 是否过期
      *
      * @param token Jwt Token
-     * @return 如果令牌已过期返回true
+     * @return 如果 Token 已过期返回true
      */
     boolean isTokenExpired(String token);
 
@@ -64,5 +64,12 @@ public interface JwtTokenService {
      *
      * @return Access Token 有效期（秒）
      */
-    long getAccessTokenExpirationInSeconds();
+    int getAccessTokenExpirationInSeconds();
+
+    /**
+     * 获取 Refresh Token 有效期（秒）
+     *
+     * @return Refresh Token 有效期（秒）
+     */
+    int getRefreshTokenExpirationInSeconds();
 }

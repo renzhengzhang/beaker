@@ -3,6 +3,7 @@ package me.renzheng.beaker.start.aspect;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import me.renzheng.beaker.common.exception.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -56,6 +57,13 @@ public class ExceptionHandleRestControllerAdvice {
             return extractErrors(cve.getConstraintViolations());
         }
         return INVALID_REQUEST_PARAMETER;
+    }
+
+    @ExceptionHandler(value = BusinessException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleBusinessException(Exception e) {
+        log.error("全局异常处理器捕获业务异常", e);
+        return e.getMessage();
     }
 
     @ExceptionHandler(value = Exception.class)

@@ -12,17 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
+public class AuthResponseDTO {
 
     /**
      * 访问令牌
      */
     private String accessToken;
-
-    /**
-     * 刷新令牌 (仅在登录时返回)
-     */
-    private String refreshToken;
 
     /**
      * 令牌类型
@@ -32,7 +27,7 @@ public class AuthResponse {
     /**
      * 访问令牌有效期（秒）
      */
-    private long expiresIn;
+    private Integer expiresIn;
 
     /**
      * 用户名

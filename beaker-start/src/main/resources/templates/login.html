@@ -87,6 +87,9 @@
 
             <!-- 登录表单 -->
             <form th:action="@{/login}" method="post" class="space-y-6">
+                <!-- 隐藏的 redirect 参数 -->
+                <input type="hidden" th:if="${param.redirect}" name="redirect" th:value="${param.redirect}" />
+
                 <!-- 用户名输入 -->
                 <div class="relative">
                     <input type="text" id="username" name="username" required
@@ -139,7 +142,7 @@
                         首页
                     </a>
                     <span>|</span>
-                    <a th:href="@{/jwt/test}" class="hover:text-white transition-colors">
+                    <a th:href="@{/test/jwt}" class="hover:text-white transition-colors">
                         <i class="fas fa-code mr-1"></i>
                         Jwt Token 测试
                     </a>

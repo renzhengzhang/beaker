@@ -1,7 +1,5 @@
-package me.renzheng.beaker.start.config;
+package me.renzheng.beaker.start.config.security;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
-import com.nimbusds.jose.proc.SecurityContext;
 import me.renzheng.beaker.biz.auth.config.AppSecurityProperties;
 import me.renzheng.beaker.biz.user.impl.UserBizImpl;
 import me.renzheng.beaker.service.UserService;
@@ -21,18 +19,11 @@ import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Spring Security 相关配置
@@ -45,60 +36,108 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 public class WebSecurityConfig {
 
+    /**
+     * 公开访问的 Web URL 数组。不需要认证即可访问，通常包括登录页面、静态资源等
+     */
     private static final String[] PERMIT_ALL_URLS = {
+            // 主页
             "/",
+            // 登录页面
             "/login",
-            "/logout",          // 登出接口
-            "/favicon.ico",     // Favicon 图标
-            "/static/**",       // 静态资源
-            "/test/**",         // 测试页面
-            "/actuator/health", // 健康检查端点
-            "/actuator/info",   // 信息端点
-            "/error"            // 错误页面
+            // 登出接口
+            "/logout",
+            // 错误页面
+            "/error",
+            // Favicon 图标
+            "/favicon.ico",
+            // well-known URL，用于暴露公共元数据，例如密码管理器的自动配置
+            "/.well-known/**",
+            // 静态资源
+            "/static/**",
+            "/js/**",
+            "/css/**",
+            "/images/**",
+            // 测试页面
+            "/test/**",
+            // 健康检查端点
+            "/actuator/health",
+            // 信息端点
+            "/actuator/info",
     };
 
+    /**
+     * 公开访问的 API URL 数组。不需要认证即可访问，通常包括登录、公共接口等
+     */
     private static final String[] API_PERMIT_ALL_URLS = {
-            "/api/auth/login",      // 登录接口
-            "/api/auth/refresh",    // Refresh Token 接口
-            "/api/common/**",       // 通用接口
-            "/api/public/**"        // 公开接口
+            // JWT 登录接口
+            "/api/auth/login",
+            // Refresh Token 接口
+            "/api/auth/refresh",
+            // 通用接口
+            "/api/common/**",
+            // 公开接口
+            "/api/public/**"
+    };
+
+    /**
+     * 登出时需要清除的 Cookies 名称列表
+     */
+    private static final String[] COOKIE_NAMES_TO_CLEAR_WHEN_LOGOUT = {
+            "JSESSIONID",
+            "refresh_token"
     };
 
     private final AppSecurityProperties securityProperties;
+    private final JwtDecoder jwtDecoder;
+    private final RefreshTokenGenerationAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
-    public WebSecurityConfig(AppSecurityProperties securityProperties) {
+    public WebSecurityConfig(AppSecurityProperties securityProperties,
+                             JwtDecoder jwtDecoder,
+                             RefreshTokenGenerationAuthenticationSuccessHandler authenticationSuccessHandler) {
         this.securityProperties = securityProperties;
+        this.jwtDecoder = jwtDecoder;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 
     /**
-     * Web 应用安全过滤链 - 用于表单登录（Thymeleaf 页面）
+     * Web SecurityFilterChain
      */
     @Bean
     @Order(1)
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher(request -> !request.getRequestURI().startsWith("/api/"))   // 排除 /api/** 路径
+                // 排除 /api/** 路径
+                .securityMatcher(request -> !isApiRequest(request.getRequestURI()))
                 .authorizeHttpRequests((authorize) -> authorize
+                        // 公开访问的 URL
                         .requestMatchers(PERMIT_ALL_URLS).permitAll()
+                        // 其他请求需要认证
                         .anyRequest().authenticated())
-                .formLogin((formLogin) -> formLogin
+                .formLogin(formLogin -> formLogin
+                        // 表单登录页面 URL
                         .loginPage("/login")
-                        .permitAll())
-                .logout((logout) -> logout
-                        .logoutUrl("/logout")                                               // 登出处理URL
-                        .logoutSuccessUrl("/login?logout")                                  // 登出成功后重定向 URL
-                        .invalidateHttpSession(true)                                        // 使 Session 失效
-                        .deleteCookies("JSESSIONID")                                        // 删除指定的 Cookies
-                        .clearAuthentication(true)                                          // 清除认证信息
-                        .permitAll()                                                        // 允许所有用户访问登出 URL
-                );
+                        // 登录成功处理器，用于桥接 form-login 和 JWT
+                        .successHandler(authenticationSuccessHandler)
+                        )
+                .logout(logout -> logout
+                        // 登出处理URL
+                        .logoutUrl("/logout")
+                        // 登出成功后跳转的 URL
+                        .logoutSuccessUrl("/login?logout")
+                        // 清除 HTTP Session
+                        .invalidateHttpSession(true)
+                        // TODO 添加 LogoutHandler 吊销当前设备的 Refresh Token
+                        // 清除指定的 Cookies
+                        .deleteCookies(COOKIE_NAMES_TO_CLEAR_WHEN_LOGOUT)
+                        // Authentication
+                        .clearAuthentication(true));
 
         return http.build();
     }
 
     /**
-     * API 安全过滤链 - 用于 JWT 认证
+     * API SecurityFilterChain
      */
     @Bean
     @Order(2)
@@ -111,35 +150,13 @@ public class WebSecurityConfig {
                         .requestMatchers(API_PERMIT_ALL_URLS).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.decoder(jwtDecoder())))
+                        .jwt(jwt -> jwt.decoder(jwtDecoder)))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
 
-    /**
-     * JWT 解码器
-     */
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        byte[] keyBytes = securityProperties.getJwt().getSecret().getBytes(StandardCharsets.UTF_8);
-        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
-        return NimbusJwtDecoder.withSecretKey(secretKey)
-                .macAlgorithm(MacAlgorithm.HS256)
-                .build();
-    }
-
-    /**
-     * JWT 编码器
-     */
-    @Bean
-    public JwtEncoder jwtEncoder() {
-        byte[] keyBytes = securityProperties.getJwt().getSecret().getBytes(StandardCharsets.UTF_8);
-        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
-        ImmutableSecret<SecurityContext> secret = new ImmutableSecret<>(secretKey);
-        return new NimbusJwtEncoder(secret);
-    }
 
     /**
      * CORS 配置 - 更安全的配置
@@ -178,5 +195,9 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    private boolean isApiRequest(String requestUri) {
+        return requestUri.startsWith("/api/");
     }
 }

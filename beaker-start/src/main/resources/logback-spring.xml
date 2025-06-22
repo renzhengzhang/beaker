@@ -1,17 +1,17 @@
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty scope="context" name="springAppName" source="spring.application.name" />
 
-    <property name="DEFAULT_USER_ID" value="-1"/>
-    <property name="DEFAULT_USERNAME" value="system"/>
+    <property name="DEFAULT_USER_ID" value="-1" />
+    <property name="DEFAULT_USERNAME" value="system" />
     <property name="DEFAULT_TRACE_ID" value="-" />
 
     <!--  Example for logging into the build folder of your project  -->
-    <property name="LOG_FILE" value="${user.home}/logs/${springAppName}/application"/>
+    <property name="LOG_FILE" value="${user.home}/logs/${springAppName}/application" />
 
     <!--  You can override this to have a custom pattern  -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m \(traceId=%X{traceId:-${DEFAULT_TRACE_ID}},userId=%X{userId:-${DEFAULT_USER_ID}},username=%X{username:-${DEFAULT_USERNAME}}\)%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+        value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m \(traceId=%X{traceId:-${DEFAULT_TRACE_ID}},userId=%X{userId:-${DEFAULT_USER_ID}},username=%X{username:-${DEFAULT_USERNAME}}\)%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
 
     <!--  Appender to log to console  -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
@@ -61,8 +61,10 @@
                 <timestamp>
                     <timeZone>UTC</timeZone>
                 </timestamp>
-                <pattern>{ "timestamp": "@timestamp", "severity": "%level", "service": "${springAppName:-}",
-                    "trace": "%X{traceId:-}", "span": "%X{spanId:-}", "pid": "${PID:-}", "thread": "%thread",
+                <pattern>{ "timestamp": "@timestamp", "severity": "%level", "service":
+                    "${springAppName:-}",
+                    "trace": "%X{traceId:-}", "span": "%X{spanId:-}", "pid": "${PID:-}", "thread":
+                    "%thread",
                     "class": "%logger{40}", "rest": "%message" }
                 </pattern>
             </providers>
@@ -70,13 +72,16 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="console"/>
-        <appender-ref ref="flatfile"/>
-        <appender-ref ref="logstash"/>
+        <appender-ref ref="console" />
+        <appender-ref ref="flatfile" />
+        <appender-ref ref="logstash" />
     </root>
 
     <logger name="me.renzheng.beaker.dao.mapper" level="DEBUG" additivity="false">
-        <appender-ref ref="console"/>
+        <appender-ref ref="console" />
     </logger>
+
+    <!-- 降低静态资源 404 的日志级别，避免无用报错刷屏 -->
+    <logger name="org.springframework.web.servlet.resource" level="ERROR" />
 
 </configuration>
