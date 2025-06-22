@@ -35,4 +35,12 @@ public class TestController {
 
         return "test/jwt";
     }
+
+    /**
+     * 图片上传测试页面
+     */
+    @GetMapping("/upload")
+    public String uploadPage() {
+        return "test/upload";
+    }
 }

@@ -253,6 +253,23 @@
                 </div>
             </div>
 
+            <!-- 图片上传 -->
+            <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-500">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-image text-2xl text-pink-600"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3 text-center">图片上传</h3>
+                <p class="text-blue-100 text-center mb-4">
+                    支持图片选择、预览与上传，便于演示和测试文件上传流程
+                </p>
+                <div class="text-center">
+                    <a th:href="@{/test/upload}"
+                        class="bg-white text-pink-600 px-4 py-2 rounded-lg font-medium hover:bg-opacity-90 transition-colors inline-block">
+                        图片上传
+                    </a>
+                </div>
+            </div>
+
             <!-- API 接口 -->
             <div class="feature-card p-6 rounded-2xl shadow-xl card-hover fade-in-up animation-delay-600">
                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -338,6 +355,11 @@
                     class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
                     <i class="fas fa-code mr-2"></i>
                     JWT 测试
+                </a>
+                <a th:href="@{/test/upload}"
+                    class="bg-white text-pink-600 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
+                    <i class="fas fa-image mr-2"></i>
+                    图片上传
                 </a>
                 <a th:href="@{/admin}"
                     class="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
