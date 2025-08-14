@@ -34,7 +34,7 @@ public class RedissonDistributionLockService implements DistributionLockService 
     @Override
     public boolean tryLock(String key, long expireTime, TimeUnit timeUnit) {
         if (key == null) {
-            log.warn("[RedissonDistributionLockService] tryLock failed: key cannot be null");
+            log.warn("tryLock failed: key cannot be null");
             return false;
         }
 
@@ -46,22 +46,22 @@ public class RedissonDistributionLockService implements DistributionLockService 
             long costTime = System.currentTimeMillis() - startTime;
             
             if (acquired) {
-                log.info("[RedissonDistributionLockService] tryLock success: key={}, expireTime={}{}, costTime={}ms", 
+                log.info("tryLock success: key={}, expireTime={}{}, costTime={}ms", 
                         key, expireTime, timeUnit.name().toLowerCase(), costTime);
                 return true;
             } else {
-                log.info("[RedissonDistributionLockService] tryLock failed: key={}, expireTime={}{}, costTime={}ms", 
+                log.info("tryLock failed: key={}, expireTime={}{}, costTime={}ms", 
                         key, expireTime, timeUnit.name().toLowerCase(), costTime);
                 return false;
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             long costTime = System.currentTimeMillis() - startTime;
-            log.warn("[RedissonDistributionLockService] tryLock interrupted: key={}, costTime={}ms", key, costTime);
+            log.warn("tryLock interrupted: key={}, costTime={}ms", key, costTime);
             return false;
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[RedissonDistributionLockService] tryLock exception: key={}, expireTime={}{}, costTime={}ms", 
+            log.error("tryLock exception: key={}, expireTime={}{}, costTime={}ms", 
                     key, expireTime, timeUnit.name().toLowerCase(), costTime, e);
             return false;
         }
@@ -75,7 +75,7 @@ public class RedissonDistributionLockService implements DistributionLockService 
     @Override
     public boolean lock(String key, long acquireTimeout, long expireTime, TimeUnit timeUnit) {
         if (key == null) {
-            log.warn("[RedissonDistributionLockService] lock failed: key cannot be null");
+            log.warn("lock failed: key cannot be null");
             return false;
         }
 
@@ -87,12 +87,12 @@ public class RedissonDistributionLockService implements DistributionLockService 
             long costTime = System.currentTimeMillis() - startTime;
             
             if (acquired) {
-                log.info("[RedissonDistributionLockService] lock success: key={}, acquireTimeout={}{}, expireTime={}{}, costTime={}ms",
+                log.info("lock success: key={}, acquireTimeout={}{}, expireTime={}{}, costTime={}ms",
                         key, acquireTimeout, timeUnit.name().toLowerCase(), 
                         expireTime, timeUnit.name().toLowerCase(), costTime);
                 return true;
             } else {
-                log.warn("[RedissonDistributionLockService] lock timeout: key={}, acquireTimeout={}{}, expireTime={}{}, costTime={}ms",
+                log.warn("lock timeout: key={}, acquireTimeout={}{}, expireTime={}{}, costTime={}ms",
                         key, acquireTimeout, timeUnit.name().toLowerCase(), 
                         expireTime, timeUnit.name().toLowerCase(), costTime);
                 return false;
@@ -100,11 +100,11 @@ public class RedissonDistributionLockService implements DistributionLockService 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             long costTime = System.currentTimeMillis() - startTime;
-            log.warn("[RedissonDistributionLockService] lock interrupted: key={}, costTime={}ms", key, costTime);
+            log.warn("lock interrupted: key={}, costTime={}ms", key, costTime);
             return false;
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[RedissonDistributionLockService] lock exception: key={}, acquireTimeout={}{}, expireTime={}{}, costTime={}ms", 
+            log.error("lock exception: key={}, acquireTimeout={}{}, expireTime={}{}, costTime={}ms", 
                     key, acquireTimeout, timeUnit.name().toLowerCase(), 
                     expireTime, timeUnit.name().toLowerCase(), costTime, e);
             return false;
@@ -114,7 +114,7 @@ public class RedissonDistributionLockService implements DistributionLockService 
     @Override
     public boolean unlock(String key) {
         if (key == null) {
-            log.warn("[RedissonDistributionLockService] unlock failed: key cannot be null");
+            log.warn("unlock failed: key cannot be null");
             return false;
         }
 
@@ -126,17 +126,17 @@ public class RedissonDistributionLockService implements DistributionLockService 
             if (lock.isHeldByCurrentThread()) {
                 lock.unlock();
                 long costTime = System.currentTimeMillis() - startTime;
-                log.info("[RedissonDistributionLockService] unlock success: key={}, costTime={}ms", key, costTime);
+                log.info("unlock success: key={}, costTime={}ms", key, costTime);
                 return true;
             } else {
                 long costTime = System.currentTimeMillis() - startTime;
-                log.warn("[RedissonDistributionLockService] unlock failed: lock not held by current thread, key={}, costTime={}ms", 
+                log.warn("unlock failed: lock not held by current thread, key={}, costTime={}ms", 
                         key, costTime);
                 return false;
             }
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[RedissonDistributionLockService] unlock exception: key={}, costTime={}ms", key, costTime, e);
+            log.error("unlock exception: key={}, costTime={}ms", key, costTime, e);
             return false;
         }
     }
@@ -144,17 +144,17 @@ public class RedissonDistributionLockService implements DistributionLockService 
     @Override
     public boolean isLocked(String key) {
         if (key == null) {
-            log.debug("[RedissonDistributionLockService] isLocked check: key is null, return false");
+            log.debug("isLocked check: key is null, return false");
             return false;
         }
 
         try {
             RLock lock = redissonClient.getLock(key);
             boolean locked = lock.isLocked();
-            log.debug("[RedissonDistributionLockService] isLocked check: key={}, result={}", key, locked);
+            log.debug("isLocked check: key={}, result={}", key, locked);
             return locked;
         } catch (Exception e) {
-            log.error("[RedissonDistributionLockService] isLocked check exception: key={}", key, e);
+            log.error("isLocked check exception: key={}", key, e);
             return false;
         }
     }
@@ -162,17 +162,17 @@ public class RedissonDistributionLockService implements DistributionLockService 
     @Override
     public boolean isLockedByCurrentThread(String key) {
         if (key == null) {
-            log.debug("[RedissonDistributionLockService] isLockedByCurrentThread check: key is null, return false");
+            log.debug("isLockedByCurrentThread check: key is null, return false");
             return false;
         }
 
         try {
             RLock lock = redissonClient.getLock(key);
             boolean heldByCurrentThread = lock.isHeldByCurrentThread();
-            log.debug("[RedissonDistributionLockService] isLockedByCurrentThread check: key={}, result={}", key, heldByCurrentThread);
+            log.debug("isLockedByCurrentThread check: key={}, result={}", key, heldByCurrentThread);
             return heldByCurrentThread;
         } catch (Exception e) {
-            log.error("[RedissonDistributionLockService] isLockedByCurrentThread check exception: key={}", key, e);
+            log.error("isLockedByCurrentThread check exception: key={}", key, e);
             return false;
         }
     }
@@ -180,7 +180,7 @@ public class RedissonDistributionLockService implements DistributionLockService 
     @Override
     public boolean renewLock(String key, long expireTime, TimeUnit timeUnit) {
         if (key == null) {
-            log.warn("[RedissonDistributionLockService] renewLock failed: key cannot be null");
+            log.warn("renewLock failed: key cannot be null");
             return false;
         }
 
@@ -193,18 +193,18 @@ public class RedissonDistributionLockService implements DistributionLockService 
             if (lock.isHeldByCurrentThread()) {
                 // Redisson 会自动续期，这里我们返回 true 表示续期成功
                 long costTime = System.currentTimeMillis() - startTime;
-                log.info("[RedissonDistributionLockService] renewLock success (auto-renewal): key={}, expireTime={}{}, costTime={}ms", 
+                log.info("renewLock success (auto-renewal): key={}, expireTime={}{}, costTime={}ms", 
                         key, expireTime, timeUnit.name().toLowerCase(), costTime);
                 return true;
             } else {
                 long costTime = System.currentTimeMillis() - startTime;
-                log.warn("[RedissonDistributionLockService] renewLock failed: lock not held by current thread, key={}, costTime={}ms", 
+                log.warn("renewLock failed: lock not held by current thread, key={}, costTime={}ms", 
                         key, costTime);
                 return false;
             }
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[RedissonDistributionLockService] renewLock exception: key={}, expireTime={}{}, costTime={}ms", 
+            log.error("renewLock exception: key={}, expireTime={}{}, costTime={}ms", 
                     key, expireTime, timeUnit.name().toLowerCase(), costTime, e);
             return false;
         }

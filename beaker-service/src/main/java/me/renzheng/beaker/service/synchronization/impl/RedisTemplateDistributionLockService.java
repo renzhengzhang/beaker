@@ -115,7 +115,7 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
     @Override
     public boolean tryLock(String key, long expireTime, TimeUnit timeUnit) {
         if (key == null) {
-            log.warn("[[RedisTemplateDistributionLockService]] tryLock failed: key cannot be null");
+            log.warn("tryLock failed: key cannot be null");
             return false;
         }
 
@@ -132,17 +132,17 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
             if (Objects.equals(result, SUCCESS)) {
                 // 获取锁成功，将 requestId 存储到 ThreadLocal
                 setCurrentRequestId(requestId);
-                log.info("[[RedisTemplateDistributionLockService]] tryLock success: key={}, requestId={}, expireTime={}{}, costTime={}ms",
+                log.info("tryLock success: key={}, requestId={}, expireTime={}{}, costTime={}ms",
                         key, requestId, expireTime, timeUnit.name().toLowerCase(), costTime);
                 return true;
             } else {
-                log.info("[[RedisTemplateDistributionLockService]] tryLock failed: key={}, requestId={}, expireTime={}{}, costTime={}ms",
+                log.info("tryLock failed: key={}, requestId={}, expireTime={}{}, costTime={}ms",
                         key, requestId, expireTime, timeUnit.name().toLowerCase(), costTime);
                 return false;
             }
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[[RedisTemplateDistributionLockService]] tryLock exception: key={}, requestId={}, expireTime={}{}, costTime={}ms",
+            log.error("tryLock exception: key={}, requestId={}, expireTime={}{}, costTime={}ms",
                     key, requestId, expireTime, timeUnit.name().toLowerCase(), costTime, e);
             return false;
         }
@@ -156,7 +156,7 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
     @Override
     public boolean lock(String key, long acquireTimeout, long expireTime, TimeUnit timeUnit) {
         if (key == null) {
-            log.warn("[[RedisTemplateDistributionLockService]] lock failed: key cannot be null");
+            log.warn("lock failed: key cannot be null");
             return false;
         }
 
@@ -181,18 +181,18 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
                     // 获取锁成功，将 requestId 存储到 ThreadLocal
                     setCurrentRequestId(requestId);
                     long totalCostTime = System.currentTimeMillis() - startTime;
-                    log.info("[[RedisTemplateDistributionLockService]] lock success: key={}, requestId={}, acquireTimeout={}{}, expireTime={}{}, retryCount={}, totalCostTime={}ms",
+                    log.info("lock success: key={}, requestId={}, acquireTimeout={}{}, expireTime={}{}, retryCount={}, totalCostTime={}ms",
                             key, requestId, acquireTimeout, timeUnit.name().toLowerCase(),
                             expireTime, timeUnit.name().toLowerCase(), retryCount, totalCostTime);
                     return true;
                 }
 
-                log.debug("[[RedisTemplateDistributionLockService]] lock attempt failed: key={}, requestId={}, retryCount={}, attemptCostTime={}ms",
+                log.debug("lock attempt failed: key={}, requestId={}, retryCount={}, attemptCostTime={}ms",
                         key, requestId, retryCount, attemptCostTime);
 
             } catch (Exception e) {
                 long attemptCostTime = System.currentTimeMillis() - attemptStartTime;
-                log.warn("[[RedisTemplateDistributionLockService]] lock attempt exception: key={}, requestId={}, retryCount={}, attemptCostTime={}ms",
+                log.warn("lock attempt exception: key={}, requestId={}, retryCount={}, attemptCostTime={}ms",
                         key, requestId, retryCount, attemptCostTime, e);
             }
 
@@ -201,14 +201,14 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 long totalCostTime = System.currentTimeMillis() - startTime;
-                log.warn("[[RedisTemplateDistributionLockService]] lock interrupted: key={}, requestId={}, retryCount={}, totalCostTime={}ms",
+                log.warn("lock interrupted: key={}, requestId={}, retryCount={}, totalCostTime={}ms",
                         key, requestId, retryCount, totalCostTime);
                 return false;
             }
         }
 
         long totalCostTime = System.currentTimeMillis() - startTime;
-        log.warn("[[RedisTemplateDistributionLockService]] lock timeout: key={}, requestId={}, acquireTimeout={}{}, retryCount={}, totalCostTime={}ms",
+        log.warn("lock timeout: key={}, requestId={}, acquireTimeout={}{}, retryCount={}, totalCostTime={}ms",
                 key, requestId, acquireTimeout, timeUnit.name().toLowerCase(), retryCount, totalCostTime);
         return false;
     }
@@ -217,11 +217,11 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
     public boolean unlock(String key) {
         String requestId = getCurrentRequestId();
         if (key == null) {
-            log.warn("[[RedisTemplateDistributionLockService]] unlock failed: key cannot be null");
+            log.warn("unlock failed: key cannot be null");
             return false;
         }
         if (requestId == null) {
-            log.warn("[[RedisTemplateDistributionLockService]] unlock failed: requestId is null, key={}", key);
+            log.warn("unlock failed: requestId is null, key={}", key);
             return false;
         }
 
@@ -234,23 +234,23 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
 
             if (Objects.equals(result, SUCCESS)) {
                 // 部分释放成功（还有重入）
-                log.info("[[RedisTemplateDistributionLockService]] unlock partial success: key={}, requestId={}, costTime={}ms",
+                log.info("unlock partial success: key={}, requestId={}, costTime={}ms",
                         key, requestId, costTime);
                 return true;
             } else if (Objects.equals(result, FULLY_RELEASED)) {
                 // 完全释放成功，清除 ThreadLocal 中的 requestId
                 clearCurrentRequestId();
-                log.info("[[RedisTemplateDistributionLockService]] unlock fully success: key={}, requestId={}, costTime={}ms",
+                log.info("unlock fully success: key={}, requestId={}, costTime={}ms",
                         key, requestId, costTime);
                 return true;
             } else {
-                log.warn("[[RedisTemplateDistributionLockService]] unlock failed: lock not held by current thread, key={}, requestId={}, costTime={}ms",
+                log.warn("unlock failed: lock not held by current thread, key={}, requestId={}, costTime={}ms",
                         key, requestId, costTime);
                 return false;
             }
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[[RedisTemplateDistributionLockService]] unlock exception: key={}, requestId={}, costTime={}ms", 
+            log.error("unlock exception: key={}, requestId={}, costTime={}ms", 
                     key, requestId, costTime, e);
             return false;
         }
@@ -259,16 +259,16 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
     @Override
     public boolean isLocked(String key) {
         if (key == null) {
-            log.debug("[[RedisTemplateDistributionLockService]] isLocked check: key is null, return false");
+            log.debug("isLocked check: key is null, return false");
             return false;
         }
 
         try {
             boolean locked = redisTemplate.hasKey(key);
-            log.debug("[[RedisTemplateDistributionLockService]] isLocked check: key={}, result={}", key, locked);
+            log.debug("isLocked check: key={}, result={}", key, locked);
             return locked;
         } catch (Exception e) {
-            log.error("[[RedisTemplateDistributionLockService]] isLocked check exception: key={}", key, e);
+            log.error("isLocked check exception: key={}", key, e);
             return false;
         }
     }
@@ -277,21 +277,21 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
     public boolean isLockedByCurrentThread(String key) {
         String requestId = getCurrentRequestId();
         if (key == null) {
-            log.debug("[[RedisTemplateDistributionLockService]] isLockedByCurrentThread check: key is null, return false");
+            log.debug("isLockedByCurrentThread check: key is null, return false");
             return false;
         }
         if (requestId == null) {
-            log.debug("[[RedisTemplateDistributionLockService]] isLockedByCurrentThread check: requestId is null, key={}, return false", key);
+            log.debug("isLockedByCurrentThread check: requestId is null, key={}, return false", key);
             return false;
         }
 
         try {
             boolean heldByCurrentThread = redisTemplate.opsForHash().hasKey(key, requestId);
-            log.debug("[[RedisTemplateDistributionLockService]] isLockedByCurrentThread check: key={}, requestId={}, result={}", 
+            log.debug("isLockedByCurrentThread check: key={}, requestId={}, result={}", 
                     key, requestId, heldByCurrentThread);
             return heldByCurrentThread;
         } catch (Exception e) {
-            log.error("[[RedisTemplateDistributionLockService]] isLockedByCurrentThread check exception: key={}, requestId={}", 
+            log.error("isLockedByCurrentThread check exception: key={}, requestId={}", 
                     key, requestId, e);
             return false;
         }
@@ -301,11 +301,11 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
     public boolean renewLock(String key, long expireTime, TimeUnit timeUnit) {
         String requestId = getCurrentRequestId();
         if (key == null) {
-            log.warn("[[RedisTemplateDistributionLockService]] renewLock failed: key cannot be null");
+            log.warn("renewLock failed: key cannot be null");
             return false;
         }
         if (requestId == null) {
-            log.warn("[[RedisTemplateDistributionLockService]] renewLock failed: requestId is null, key={}", key);
+            log.warn("renewLock failed: requestId is null, key={}", key);
             return false;
         }
 
@@ -314,7 +314,7 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
         try {
             if (!isLockedByCurrentThread(key)) {
                 long costTime = System.currentTimeMillis() - startTime;
-                log.warn("[[RedisTemplateDistributionLockService]] renewLock failed: lock not held by current thread, key={}, requestId={}, costTime={}ms", 
+                log.warn("renewLock failed: lock not held by current thread, key={}, requestId={}, costTime={}ms", 
                         key, requestId, costTime);
                 return false;
             }
@@ -324,17 +324,17 @@ public class RedisTemplateDistributionLockService implements DistributionLockSer
             long costTime = System.currentTimeMillis() - startTime;
 
             if (renewed) {
-                log.info("[[RedisTemplateDistributionLockService]] renewLock success: key={}, requestId={}, expireTime={}{}, costTime={}ms", 
+                log.info("renewLock success: key={}, requestId={}, expireTime={}{}, costTime={}ms", 
                         key, requestId, expireTime, timeUnit.name().toLowerCase(), costTime);
             } else {
-                log.warn("[[RedisTemplateDistributionLockService]] renewLock failed: expire operation failed, key={}, requestId={}, costTime={}ms", 
+                log.warn("renewLock failed: expire operation failed, key={}, requestId={}, costTime={}ms", 
                         key, requestId, costTime);
             }
 
             return renewed;
         } catch (Exception e) {
             long costTime = System.currentTimeMillis() - startTime;
-            log.error("[[RedisTemplateDistributionLockService]] renewLock exception: key={}, requestId={}, expireTime={}{}, costTime={}ms", 
+            log.error("renewLock exception: key={}, requestId={}, expireTime={}{}, costTime={}ms", 
                     key, requestId, expireTime, timeUnit.name().toLowerCase(), costTime, e);
             return false;
         }
