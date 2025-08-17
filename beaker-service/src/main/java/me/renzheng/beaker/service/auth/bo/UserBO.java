@@ -1,5 +1,6 @@
-package me.renzheng.beaker.service.bo;
+package me.renzheng.beaker.service.auth.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import me.renzheng.beaker.common.entity.AbstractEntity;
@@ -9,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serial;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -23,6 +25,9 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 public class UserBO extends AbstractEntity<Long> implements UserDetails {
+
+    @Serial
+    private static final long serialVersionUID = -2824144528274117776L;
 
     private String username;
 
@@ -39,6 +44,7 @@ public class UserBO extends AbstractEntity<Long> implements UserDetails {
     private Boolean banned;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Stream.of(Role.USER.name())
                 .map(SimpleGrantedAuthority::new)
@@ -46,26 +52,31 @@ public class UserBO extends AbstractEntity<Long> implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return passwd;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return !Boolean.TRUE.equals(banned);
     }

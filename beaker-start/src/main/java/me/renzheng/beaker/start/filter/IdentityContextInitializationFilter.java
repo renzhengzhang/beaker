@@ -7,7 +7,7 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import me.renzheng.beaker.common.context.IdentityContext;
 import me.renzheng.beaker.common.context.IdentityContextHolder;
-import me.renzheng.beaker.service.bo.UserBO;
+import me.renzheng.beaker.service.auth.bo.UserBO;
 import org.slf4j.MDC;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

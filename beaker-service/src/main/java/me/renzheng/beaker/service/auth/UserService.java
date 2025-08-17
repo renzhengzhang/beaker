@@ -1,6 +1,7 @@
-package me.renzheng.beaker.service;
+package me.renzheng.beaker.service.auth;
 
-import me.renzheng.beaker.service.bo.UserBO;
+import me.renzheng.beaker.service.auth.bo.UserBO;
+import me.renzheng.beaker.service.common.EntityService;
 
 /**
  * UserService

@@ -1,18 +1,21 @@
-package me.renzheng.beaker.service.impl;
+package me.renzheng.beaker.service.auth.impl;
 
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import me.renzheng.beaker.common.util.EntityUtil;
-import me.renzheng.beaker.service.bo.UserBO;
-import me.renzheng.beaker.service.converter.UserConverter;
 import me.renzheng.beaker.dao.entity.UserDO;
 import me.renzheng.beaker.dao.example.UserExample;
 import me.renzheng.beaker.dao.mapper.UserMapper;
-import me.renzheng.beaker.service.UserService;
+import me.renzheng.beaker.service.auth.UserService;
+import me.renzheng.beaker.service.auth.bo.UserBO;
+import me.renzheng.beaker.service.auth.converter.UserConverter;
+import me.renzheng.beaker.service.cache.Cacheable;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * UserServiceImpl
@@ -20,6 +23,7 @@ import java.util.Objects;
  * @author Renzheng Zhang
  * @since 2024/4/28
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -94,7 +98,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "user", key = "#username", timeout = 10, timeUnit = TimeUnit.MINUTES, cacheNull = true)
     public UserBO selectByUsername(String username) {
+        log.info("基于用户名查询用户信息: {}", username);
         UserExample example = new UserExample();
         example.createCriteria()
                 .andDeletedEqualTo(false)

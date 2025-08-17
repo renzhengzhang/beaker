@@ -1,4 +1,4 @@
-package me.renzheng.beaker.service;
+package me.renzheng.beaker.service.common;
 
 /**
  * AbstractEntityService

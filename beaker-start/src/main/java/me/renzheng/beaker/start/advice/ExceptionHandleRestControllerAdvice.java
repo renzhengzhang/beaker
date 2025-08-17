@@ -1,4 +1,4 @@
-package me.renzheng.beaker.start.aspect;
+package me.renzheng.beaker.start.advice;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

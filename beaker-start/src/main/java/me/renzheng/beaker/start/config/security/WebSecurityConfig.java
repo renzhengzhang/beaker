@@ -2,7 +2,7 @@ package me.renzheng.beaker.start.config.security;
 
 import me.renzheng.beaker.biz.auth.config.AppSecurityProperties;
 import me.renzheng.beaker.biz.user.impl.UserBizImpl;
-import me.renzheng.beaker.service.UserService;
+import me.renzheng.beaker.service.auth.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

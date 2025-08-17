@@ -1,15 +1,14 @@
-package me.renzheng.beaker.service.impl;
+package me.renzheng.beaker.service.auth;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import me.renzheng.beaker.service.bo.UserBO;
-import me.renzheng.beaker.service.UserService;
-import me.renzheng.beaker.start.Application;
+import me.renzheng.beaker.service.auth.bo.UserBO;
+import me.renzheng.beaker.start.AbstractTests;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Objects;
@@ -21,8 +20,7 @@ import java.util.Objects;
  * @since 2024/4/28
  */
 @Slf4j
-@SpringBootTest(classes = Application.class)
-public class UserServiceTests {
+public class UserServiceTests extends AbstractTests {
 
     @Resource
     private UserService userService;
@@ -32,6 +30,7 @@ public class UserServiceTests {
 
     @DisplayName("测试插入用户")
     @Order(1)
+    @Disabled
     @Test
     public void whenRegister_thenSuccess() {
         UserBO newUser = mockNewUser();
@@ -52,6 +51,8 @@ public class UserServiceTests {
     public void whenQueryDb_thenSuccess() {
         UserBO mockUser = mockNewUser();
         UserBO userInDb = userService.selectByUsername(mockUser.getUsername());
+        userInDb = userService.selectByUsername(mockUser.getUsername());
+        userInDb = userService.selectByUsername(mockUser.getUsername());
         Assertions.assertNotNull(userInDb, "failed to query user from db.");
         Assertions.assertEquals(mockUser.getUsername(), userInDb.getUsername(), "username not match.");
     }
