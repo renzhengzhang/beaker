@@ -30,7 +30,7 @@
         <mbg-plugin.version>1.3.5</mbg-plugin.version>
         <redisson-spring-boot-starter.version>3.45.0</redisson-spring-boot-starter.version>
         <guava.version>33.1.0-jre</guava.version>
-        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-io.version>2.18.0</commons-io.version>
         <transmittable-thread-local.version>2.14.5</transmittable-thread-local.version>
